@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+install_gcloud() {
+  local install_type=$1
+  local version=$2
+  local install_path=$3
+  local concurrency=$3
+
+  if [ "${install_type}" != "version" ]; then
+    echo "Cannot install specific ref from source, sorry." >&2
+    echo "For a list of available versions, see \`asdf list-all gcloud\`." >&2
+    exit 1
+  fi
+
+  case $OSTYPE in
+  darwin*)
+    local platform="darwin"
+    ;;
+  linux*)
+    local platform="linux"
+    ;;
+  *)
+    echo "unsupported platform" >&2
+    exit 1
+    ;;
+  esac
+
+  local tmp_dir=$(mktemp -d -t gcloud_XXXXXX)
+  local archive_path="${tmp_dir}/gcloud.tar.gz"
+
+  local cmd="curl -o ${archive_path} -sL"
+  if [ -n "$GITHUB_API_TOKEN" ]; then
+    cmd="$cmd --header 'Authorization: token $GITHUB_API_TOKEN'"
+  fi
+
+  ${cmd} "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${version}-${platform}-x86_64.tar.gz"
+  tar xzvf ${archive_path} -C ${install_path}
+}
+
+install_gcloud "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH" "$ASDF_CONCURRENCY"
