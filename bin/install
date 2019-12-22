@@ -34,7 +34,7 @@ install_gcloud() {
   fi
 
   ${cmd} "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${version}-${platform}-x86_64.tar.gz"
-  tar xzvf ${archive_path} -C ${install_path}
+  tar xzf ${archive_path} -C ${install_path}
 }
 
 install_gcloud "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH" "$ASDF_CONCURRENCY"
