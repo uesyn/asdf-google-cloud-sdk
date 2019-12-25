@@ -28,7 +28,7 @@ install_gcloud() {
   local tmp_dir=$(mktemp -d -t gcloud_XXXXXX)
   local archive_path="${tmp_dir}/gcloud.tar.gz"
 
-  local cmd="curl -o ${archive_path} -sL"
+  local cmd="curl -o ${archive_path} -L"
   eval ${cmd} "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${version}-${platform}-x86_64.tar.gz"
   tar xzf ${archive_path} -C ${install_path}
 }
